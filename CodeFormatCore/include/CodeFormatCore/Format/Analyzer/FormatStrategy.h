@@ -28,9 +28,6 @@ enum class TokenStrategy {
     StmtEndSemicolon,
     NewLineBeforeToken,
 
-    WithParentheses,
-    WithLeftParentheses,
-    WithRightParentheses,
     SpaceAfterCommentDash
 };
 
@@ -47,6 +44,13 @@ enum class IndentStrategy {
     InvertRelative,
     Absolute,
     Same
+};
+
+enum class ParenthesesStrategy {
+    None,
+    WithParentheses,
+    WithLeftParentheses,
+    WithRightParentheses,
 };
 
 enum class IndentType {

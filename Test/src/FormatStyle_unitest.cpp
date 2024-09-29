@@ -433,10 +433,11 @@ p("456")
 )",
             style));
     style.call_arg_parentheses = CallArgParentheses::Remove;
+    style.quote_style = QuoteStyle::Double;
     EXPECT_TRUE(TestHelper::TestFormatted(
             R"(
 p(123)
-p "12313"
+p '12313'
 p("456")
 local t = {
     a({
@@ -458,9 +459,10 @@ local t = {
 )",
             style));
     style.call_arg_parentheses = CallArgParentheses::RemoveStringOnly;
+	style.quote_style = QuoteStyle::Double;
     EXPECT_TRUE(TestHelper::TestFormatted(
             R"(
-p("456")
+p('456')
 p({1231})
 )",
             R"(
@@ -469,6 +471,7 @@ p({ 1231 })
 )",
             style));
     style.call_arg_parentheses = CallArgParentheses::RemoveTableOnly;
+	style.quote_style = QuoteStyle::None;
     EXPECT_TRUE(TestHelper::TestFormatted(
             R"(
 p("456")
@@ -477,6 +480,20 @@ p({1231})
             R"(
 p("456")
 p { 1231 }
+)",
+            style));
+    style.call_arg_parentheses = CallArgParentheses::Always;
+    style.quote_style = QuoteStyle::Double;
+    EXPECT_TRUE(TestHelper::TestFormatted(
+            R"(
+p '456' 
+p {1231} 
+p(foo)
+)",
+            R"(
+p("456")
+p({ 1231 })
+p(foo)
 )",
             style));
 }

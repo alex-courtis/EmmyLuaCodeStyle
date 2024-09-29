@@ -75,6 +75,17 @@ void FormatBuilder::DoResolve(LuaSyntaxNode &syntaxNode, const LuaSyntaxTree &t,
             }
         }
 
+        switch (resolve.GetParenthesesStrategy()) {
+            case ParenthesesStrategy::WithParentheses:
+            case ParenthesesStrategy::WithLeftParentheses: {
+                WriteChar('(');
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+
         switch (resolve.GetTokenStrategy()) {
             case TokenStrategy::Origin: {
                 WriteSyntaxNode(syntaxNode, t);
@@ -146,22 +157,6 @@ void FormatBuilder::DoResolve(LuaSyntaxNode &syntaxNode, const LuaSyntaxTree &t,
                 WriteSyntaxNode(syntaxNode, t);
                 break;
             }
-            case TokenStrategy::WithParentheses: {
-                WriteChar('(');
-                WriteSyntaxNode(syntaxNode, t);
-                WriteChar(')');
-                break;
-            }
-            case TokenStrategy::WithLeftParentheses:{
-                WriteChar('(');
-                WriteSyntaxNode(syntaxNode, t);
-                break;
-            }
-            case TokenStrategy::WithRightParentheses: {
-                WriteSyntaxNode(syntaxNode, t);
-                WriteChar(')');
-                break;
-            }
             case TokenStrategy::SpaceAfterCommentDash: {
                 auto text = syntaxNode.GetText(t);
                 std::size_t pos = 0;
@@ -171,6 +166,17 @@ void FormatBuilder::DoResolve(LuaSyntaxNode &syntaxNode, const LuaSyntaxTree &t,
                 }
                 WriteChar(' ');
                 WriteText(text.substr(pos));
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+
+        switch (resolve.GetParenthesesStrategy()) {
+            case ParenthesesStrategy::WithParentheses:
+            case ParenthesesStrategy::WithRightParentheses: {
+                WriteChar(')');
                 break;
             }
             default: {

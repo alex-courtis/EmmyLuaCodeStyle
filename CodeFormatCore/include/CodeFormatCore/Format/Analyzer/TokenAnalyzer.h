@@ -17,6 +17,8 @@ public:
 
     void MarkAdd(LuaSyntaxNode n, const LuaSyntaxTree &t, TokenAddStrategy strategy);
 
+    void MarkParentheses(LuaSyntaxNode n, const LuaSyntaxTree &t, ParenthesesStrategy strategy);
+
     bool IsRemove(LuaSyntaxNode n, const LuaSyntaxTree &t) const;
 
 private:
@@ -30,4 +32,5 @@ private:
 
     std::unordered_map<std::size_t, TokenStrategy> _tokenStrategies;
     std::unordered_map<std::size_t, TokenAddStrategy> _tokenAddStrategies;
+    std::unordered_map<std::size_t, ParenthesesStrategy> _parenthesesStrategies;
 };

@@ -18,6 +18,8 @@ public:
 
     IndentStrategy GetIndentStrategy() const;
 
+    ParenthesesStrategy GetParenthesesStrategy() const;
+
     void SetNextSpace(std::size_t space);
 
     void SetNextLineBreak(LineSpace lineSpace);
@@ -31,6 +33,8 @@ public:
     void SetTokenStrategy(TokenStrategy strategy);
 
     void SetTokenAddStrategy(TokenAddStrategy strategy);
+
+    void SetParenthesesStrategy(ParenthesesStrategy strategy);
 
     std::size_t GetNextSpace();
 
@@ -52,6 +56,7 @@ private:
     TokenStrategy _tokenStrategy;
     TokenAddStrategy _tokenAddStrategy;
     IndentStrategy _indentStrategy;
+    ParenthesesStrategy _parenthesesStrategy;
 
     union NextData {
         NextData() : Line() {}

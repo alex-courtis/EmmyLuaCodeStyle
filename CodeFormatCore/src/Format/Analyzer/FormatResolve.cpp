@@ -6,6 +6,7 @@ FormatResolve::FormatResolve()
       _tokenStrategy(TokenStrategy::Origin),
       _tokenAddStrategy(TokenAddStrategy::None),
       _indentStrategy(IndentStrategy::None),
+      _parenthesesStrategy(ParenthesesStrategy::None),
       _nextSpaceData(),
       _prevSpaceData(),
       _indent(0) {
@@ -31,12 +32,17 @@ IndentStrategy FormatResolve::GetIndentStrategy() const {
     return _indentStrategy;
 }
 
+ParenthesesStrategy FormatResolve::GetParenthesesStrategy() const {
+    return _parenthesesStrategy;
+}
+
 void FormatResolve::Reset() {
     _tokenStrategy = TokenStrategy::Origin;
     _tokenAddStrategy = TokenAddStrategy::None;
     _nextSpaceStrategy = NextSpaceStrategy::None;
     _prevSpaceStrategy = PrevSpaceStrategy::None;
     _indentStrategy = IndentStrategy::None;
+    _parenthesesStrategy = ParenthesesStrategy::None;
     _nextSpaceData = NextData();
     _prevSpaceData = PrevData();
     _range = IndexRange();
@@ -90,6 +96,10 @@ void FormatResolve::SetTokenStrategy(TokenStrategy strategy) {
 
 void FormatResolve::SetTokenAddStrategy(TokenAddStrategy strategy) {
     _tokenAddStrategy = strategy;
+}
+
+void FormatResolve::SetParenthesesStrategy(ParenthesesStrategy strategy) {
+    _parenthesesStrategy = strategy;
 }
 
 void FormatResolve::SetOriginRange(IndexRange range) {

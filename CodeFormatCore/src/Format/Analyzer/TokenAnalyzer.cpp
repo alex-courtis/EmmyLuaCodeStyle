@@ -73,6 +73,11 @@ void TokenAnalyzer::Query(FormatState &f, LuaSyntaxNode syntaxNode, const LuaSyn
         if (it2 != _tokenAddStrategies.end()) {
             resolve.SetTokenAddStrategy(it2->second);
         }
+
+        auto it3 = _parenthesesStrategies.find(syntaxNode.GetIndex());
+        if (it3 != _parenthesesStrategies.end()) {
+            resolve.SetParenthesesStrategy(it3->second);
+        }
     }
 }
 
@@ -82,6 +87,10 @@ void TokenAnalyzer::Mark(LuaSyntaxNode n, const LuaSyntaxTree &t, TokenStrategy 
 
 void TokenAnalyzer::MarkAdd(LuaSyntaxNode n, const LuaSyntaxTree &t, TokenAddStrategy strategy) {
     _tokenAddStrategies[n.GetIndex()] = strategy;
+}
+
+void TokenAnalyzer::MarkParentheses(LuaSyntaxNode n, const LuaSyntaxTree &t, ParenthesesStrategy strategy) {
+    _parenthesesStrategies[n.GetIndex()] = strategy;
 }
 
 bool TokenAnalyzer::IsRemove(LuaSyntaxNode n, const LuaSyntaxTree &t) const {
@@ -270,15 +279,15 @@ void TokenAnalyzer::AnalyzeCallExpression(FormatState &f, LuaSyntaxNode n, const
                 if (!lbrace.IsToken(t) && spaceAnalyzer) {
                     auto node = GetSingleArgStringOrTable(n, t);
                     if (node.IsToken(t)) {
-                        Mark(node, t, TokenStrategy::WithParentheses);
+                        MarkParentheses(node, t, ParenthesesStrategy::WithParentheses);
                         spaceAnalyzer->SpaceAround(node, t, 0, SpaceAnalyzer::SpacePriority::First);
                     } else if (node.GetSyntaxKind(t) == LuaSyntaxNodeKind::StringLiteralExpression) {
-                        Mark(node.GetFirstToken(t), t, TokenStrategy::WithParentheses);
+                        MarkParentheses(node.GetFirstToken(t), t, ParenthesesStrategy::WithParentheses);
                         spaceAnalyzer->SpaceLeft(node.GetFirstToken(t), t, 0, SpaceAnalyzer::SpacePriority::First);
                     } else {
-                        Mark(node.GetFirstToken(t), t, TokenStrategy::WithLeftParentheses);
+                        MarkParentheses(node.GetFirstToken(t), t, ParenthesesStrategy::WithLeftParentheses);
                         spaceAnalyzer->SpaceLeft(node.GetFirstToken(t), t, 0, SpaceAnalyzer::SpacePriority::First);
-                        Mark(node.GetLastToken(t), t, TokenStrategy::WithRightParentheses);
+                        MarkParentheses(node.GetLastToken(t), t, ParenthesesStrategy::WithRightParentheses);
                     }
 
                     return;
